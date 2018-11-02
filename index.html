@@ -33,6 +33,25 @@
 
 <script>
 
+    var LeafIcon = L.Icon.extend({
+    options: {
+        iconSize:     [162, 92],
+        iconAnchor:   [79, 92],
+        popupAnchor:  [-3, -76]
+    }
+});
+
+    var hjmIcon = new LeafIcon({iconUrl: 'image/hjm.png'}),
+    hjdIcon = new LeafIcon({iconUrl: 'image/hjd.png'}),
+    nsmIcon = new LeafIcon({iconUrl: 'image/nsm.png'}),
+    nsgIcon = new LeafIcon({iconUrl: 'image/nsg.png'}),
+    yxmIcon = new LeafIcon({iconUrl: 'image/yxm.png'}),
+    yxdIcon = new LeafIcon({iconUrl: 'image/yxd.png'});
+
+    L.icon = function (options) {
+    return new L.Icon(options);
+};
+
 	var map = L.map('map', {
 		crs: L.CRS.Simple,
 		minZoom: -2
@@ -46,14 +65,24 @@
 		}
 		return yx(y, x);  // When doing xy(x, y);
 	};
-
+    var Mcenter = 114.5;
 	var bounds = [xy(-35, -26), xy(270, 1020.5)];
-	var image = L.imageOverlay('TSHG.jpg', bounds).addTo(map);
-
-	var deneb    = xy(117.5,   8.3);
-
+	var image = L.imageOverlay('TaiShangHuangGong3.jpg', bounds).addTo(map);
+    var deneb    = xy(117.5,   8.3);
+	var hjmP    = xy(Mcenter,   80);
+	var hjdP    = xy(Mcenter,   390);
+	var nsmP    = xy(Mcenter,   260);
+	var nsgP    = xy(Mcenter,   490);
+	var yxmP    = xy(Mcenter,   580);
+	var yxdP    = xy(Mcenter,   650);
 
 	var marker = L.marker(   deneb).addTo(map).bindPopup(    'Deneb');
+	             L.marker((hjmP), {icon: hjmIcon}).addTo(map);
+	             L.marker((hjdP), {icon: hjdIcon}).addTo(map);
+	             L.marker((nsmP), {icon: nsmIcon}).addTo(map);
+	             L.marker((nsgP), {icon: nsgIcon}).addTo(map);
+	             L.marker((yxmP), {icon: yxmIcon}).addTo(map);
+	             L.marker((yxdP), {icon: yxdIcon}).addTo(map);
 
 
 
