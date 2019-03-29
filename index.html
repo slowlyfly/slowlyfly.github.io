@@ -2,114 +2,491 @@
 <html>
 <head>
 	
-	<title>太上皇宫</title>
+	<title>Lanlord</title>
 
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
 	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
 
-
 	<style>
-		body {
-   			 padding: 0;
-   			 margin: 0;
+		html, body {
+			height: 100%;
+			margin: 0;
 		}
-		html, body, #map {
-    		height: 100%;
-   			 width: 100vw;
+		#map {
+			width: 600px;
+			height: 400px;
 		}
-		
 	</style>
 
-	
+	<style>#map { width: 100%; height: 100%; }
+.info {  padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+.legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
+.leaflet-bottom {right: 5%; width: 30%;}
+.leaflet-top {top: 5%; right: 5%; width: 30%;}
+.leaflet-left.leaflet-bottom { bottom: 10%; left: 45%; }
+
+
+   </style>
 </head>
 <body>
 
 <div id='map'></div>
 
-<script>
+<script type="text/javascript" src="us-states.js"></script>
 
-    var LeafIcon = L.Icon.extend({
-    options: {
-        iconSize:     [81, 46],
-        iconAnchor:   [39.5, 46],
-        popupAnchor:  [-3, -76]
+<script type="text/javascript">
+/*   var deltaX = 116.4887332419-0.173807 - (116.4887332419-0.180287);
+     		 console.log(statesData.features[0].geometry.coordinates[0][0]);
+             statesData.features[1] = statesData.features[0];
+             statesData.features[1].properties.name = "zone 1";
+             statesData.features[1].properties.density = 20;
+       		 statesData.features[1].geometry.coordina
+      		 statesData.features[1].geometry.coordinates[0][0] = [(116.4887332419-0.173807),51.495172];
+   		     statesData.features[1].geometry.coordinates[0][1] = [(116.4887332419-0.173807),51.50160];
+  		     console.log(statesData.features[0].geometry.coordinates[0][0]);
+  		     statesData.features[1].geometry.coordinates[0][2] = [(116.4887332419-0.180287) + deltaX, 51.495172 ];
+  		     statesData.features[1].geometry.coordinates[0][3] = [(116.4887332419-0.180287) + deltaX, 51.5016 ];
+    console.log(statesData.features[1]);
+
+
+  /*   for (i in statesData.features) {
+   	if (i > 0) {
+   		     statesData.features[i] = statesData.features[i - 1];
+   		     statesData.features[i].properties.name = "Zone" + i;
+ //  		     statesData.features[i].geometry.coordinates[0][0] = statesData.features[i - 1].geometry.coordinates[0][3];
+ //  		     statesData.features[i].geometry.coordinates[0][1] = statesData.features[i - 1].geometry.coordinates[0][2];
+   		     console.log(i);
+   		     console.log(statesData.features[i-1].properties.name);
+   		     console.log(statesData.features[i].properties.name);
+ //  		     console.log(statesData.features[i].geometry.coordinates[0][1]);
+ // 		     statesData.features[i].geometry.coordinates[0][2][0] = statesData.features[i - 1].geometry.coordinates[0][3][0] + deltaX;
+ //  		     statesData.features[i].geometry.coordinates[0][3][1] = statesData.features[i - 1].geometry.coordinates[0][2][0] + deltaX;   		     
+               }
+   
+                                  }
+    console.log(statesData);
+ /*   var prezoneborder = {"type":"Feature",
+                         "id":"01",
+                         "properties":{"name": "Zone 0",
+                                       "density":94.65},
+                         "geometry":{
+                         	       "type":"Polygon",
+                         	        "coordinates":[[[116.4887332419-0.180287,51.50160],
+                         	                        [ 116.4887332419-0.180287,51.495172],
+                         	                        [116.4887332419-0.173807,51.495172],
+                         	                        [116.4887332419-0.173807,51.50160]
+                         	                       ]]
+                         	        }
+                        };
+    var zoneborder = {"type":"Feature","id":"01","properties":{"name":"Alabama","density":94.65},"geometry":{"type":"Polygon","coordinates":[[[116.4887332419-0.180287,51.50160],[ 116.4887332419-0.180287,51.495172],[116.4887332419-0.173807,51.495172],[116.4887332419-0.173807,51.50160]]]}};
+    var deltaX = 116.4887332419-0.173807 - (116.4887332419-0.180287);
+    var zonebordergroup = new Array([20]);
+    for (i = 1; i < 20; i++)
+    	{zonebordergroup [i] = prezoneborder;}
+    console.log(statesData);
+
+
+    for (i = 1; i < 20; i++)
+    {
+         zoneborder.id = i;
+         zoneborder.properties.name = "Zone " + i; 
+         zoneborder.properties.density = Math.random(0,1)*100;
+//         console.log(prezoneborder.geometry.coordinates[0][3]);
+         zoneborder.geometry.coordinates[0][0] = prezoneborder.geometry.coordinates[0][3];
+         zoneborder.geometry.coordinates[0][1] = prezoneborder.geometry.coordinates[0][2];
+         zoneborder.geometry.coordinates[0][2][0] = prezoneborder.geometry.coordinates[0][3][0] + deltaX;
+         zoneborder.geometry.coordinates[0][3][0] = prezoneborder.geometry.coordinates[0][2][0] + deltaX;
+//         console.log(zoneborder);
+         zonebordergroup [i] = zoneborder;
+         prezoneborder = zoneborder;
+
     }
-});
 
-    var hjmIcon = new LeafIcon({iconUrl: 'image/hjm.png'}),
-    hjdIcon = new LeafIcon({iconUrl: 'image/hjd.png'}),
-    nsmIcon = new LeafIcon({iconUrl: 'image/nsm.png'}),
-    nsgIcon = new LeafIcon({iconUrl: 'image/nsg.png'}),
-    yxmIcon = new LeafIcon({iconUrl: 'image/yxm.png'}),
-    yxdIcon = new LeafIcon({iconUrl: 'image/yxd.png'});
+ */
+  //  console.log(statesData);
+
+
+
+	var map = L.map('map').setView([-11.5064952108+51.506, 116.4887332419-0.19], 14);
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery ? <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox.streets'
+	}).addTo(map);
+
+
+	// control that shows state info on hover
+	var info = L.control('topright');
+
+	info.onAdd = function (map) {
+		this._div = L.DomUtil.create('div', 'info');
+		this.update();
+		return this._div;
+	};
+
+	info.update = function (props) {
+		this._div.innerHTML = '<h4>Population Density</h4>' +  (props ?
+			'<b>' + props.name + '</b><br />' + props.density + ' person-time'
+			: 'Hover over a block');
+	};
+
+	info.addTo(map);
+
+
+	var CaptionIcon = L.Icon.extend({
+		options: {
+			iconSize:     [600, 200],
+			iconAnchor:   [5, -40],
+
+		}
+	});
+
+	var CIcon = new CaptionIcon({iconUrl: 'img/Caption4.png'});
+
+    var Markerb = L.marker([-11.5064952108+51.529456,116.4887332419-0.238607], {icon: CIcon}).bindPopup("Welcome to V Land").addTo(map);
+
+
+	var LeafIcon = L.Icon.extend({
+		options: {
+			iconSize:     [445, 333],
+			iconAnchor:   [150, 170],
+			interactive: false,
+
+		}
+	});
+
+	var greenIcon = new LeafIcon({iconUrl: 'img/Tower3.png'});
+
+    var MarkerA = L.marker([-11.5064952108+61.5, 116.4887332419-0.09], {icon: greenIcon}).bindPopup("Welcome to TsingHua Land").addTo(map);
+
+    var LeafIcon0 = L.Icon.extend({
+    options: {
+        iconSize:     [50, 50],
+        iconAnchor:   [30, 30],
+        popupAnchor:  [-10, -40]
+    }
+    });
+
+    var LordIcon0 = L.Icon.extend({
+    options: {
+        iconSize:     [70, 70],
+        iconAnchor:   [30, 30],
+        popupAnchor:  [0, -40]
+    }
+    });
+
+    var LordleilaIcon = new LordIcon0({iconUrl: 'img/leila.png'});
+    var LordstephenWIcon = new LordIcon0({iconUrl: 'img/stephenW.png'});
+    var LordnejraIcon = new LordIcon0({iconUrl: 'img/nejra.png'});
+    var LordcharlotteIcon = new LordIcon0({iconUrl: 'img/charlotte.png'});
+    var LordandrewIcon = new LordIcon0({iconUrl: 'img/andrew.png'});
+    var LordjohnIcon = new LordIcon0({iconUrl: 'img/john.png'});
+    var LordedIcon = new LordIcon0({iconUrl: 'img/ed.png'});
+    var LordsimonIcon = new LordIcon0({iconUrl: 'img/simon.png'});
+
+    var stephenGIcon = new LordIcon0({iconUrl: 'img/stephenG.png'});
+    var leilaIcon = new LeafIcon0({iconUrl: 'img/leila.png'});
+    var stephenWIcon = new LeafIcon0({iconUrl: 'img/stephenW.png'});
+    var nejraIcon = new LeafIcon0({iconUrl: 'img/nejra.png'});
+    var charlotteIcon = new LeafIcon0({iconUrl: 'img/charlotte.png'});
+    var andrewIcon = new LeafIcon0({iconUrl: 'img/andrew.png'});
+    var johnIcon = new LeafIcon0({iconUrl: 'img/john.png'});
+    var edIcon = new LeafIcon0({iconUrl: 'img/ed.png'});
+    var simonIcon = new LeafIcon0({iconUrl: 'img/simon.png'});
+
+    var feiIcon = new LeafIcon0({iconUrl: 'img/fei.png'});
+    var tianIcon = new LeafIcon0({iconUrl: 'img/tian.png'});
+    var rayIcon = new LeafIcon0({iconUrl: 'img/ray.png'});
+    var jessicaIcon = new LeafIcon0({iconUrl: 'img/jessica.png'});
+    var daisukeIcon = new LeafIcon0({iconUrl: 'img/daisuke.png'});
+    var zoeyIcon = new LeafIcon0({iconUrl: 'img/zoey.png'});
+    var abbyIcon = new LeafIcon0({iconUrl: 'img/abby.png'});
+    var jothiIcon = new LeafIcon0({iconUrl: 'img/jothi.png'});
+    var shivIcon = new LeafIcon0({iconUrl: 'img/shiv.png'});
+    var nagomuIcon = new LeafIcon0({iconUrl: 'img/nagomu.png'});
+    var parisIcon = new LeafIcon0({iconUrl: 'img/paris.png'});
+    var l2018Icon = new LeafIcon0({iconUrl: 'img/2018.png'});
+    var kimIcon = new LeafIcon0({iconUrl: 'img/kim.png'});
+    var zhongIcon = new LeafIcon0({iconUrl: 'img/zhong.png'});
+
 
     L.icon = function (options) {
     return new L.Icon(options);
-};
-
-	var map = L.map('map', {
-		crs: L.CRS.Simple,
-		minZoom: -2,
-		maxZoom: 5
-	});
-
-	var yx = L.latLng;
-
-	var xy = function(x, y) {
-		if (L.Util.isArray(x)) {    // When doing xy([x, y]);
-			return yx(x[1], x[0]);
-		}
-		return yx(y, x);  // When doing xy(x, y);
-	};
-    var Mcenter = 114.5;
-	var bounds = [xy(-35, -26), xy(270, 1020.5)];
-	var image = L.imageOverlay('TaiShangHuangGong3.jpg', bounds).addTo(map);
-    var deneb    = xy(117.5,   8.3);
-	var hjmP    = xy(Mcenter,   80);
-	var hjdP    = xy(Mcenter,   390);
-	var nsmP    = xy(Mcenter,   260);
-	var nsgP    = xy(Mcenter,   490);
-	var yxmP    = xy(Mcenter,   580);
-	var yxdP    = xy(Mcenter,   650);
-
-	var marker = L.marker(   deneb).addTo(map).bindPopup(    'Deneb');
-	             L.marker((hjmP), {icon: hjmIcon}).addTo(map);
-	             L.marker((hjdP), {icon: hjdIcon}).addTo(map);
-	             L.marker((nsmP), {icon: nsmIcon}).addTo(map);
-	             L.marker((nsgP), {icon: nsgIcon}).addTo(map);
-	             L.marker((yxmP), {icon: yxmIcon}).addTo(map);
-	             L.marker((yxdP), {icon: yxdIcon}).addTo(map);
+    };
 
 
 
-	map.setView(xy(120, 160), 1);
+	// get color depending on population density value
+    function getColor(d) {
+        return d > 1000 ? '#08589e' :
+                d > 500  ? '#2b8cbe' :
+                d > 200  ? '#4eb3d3' :
+                d > 100  ? '#7bccc4' :
+                d > 50   ? '#a8ddb5' :
+                d > 20   ? '#ccebc5' :
+                d > 10   ? '#e0f3db' :
+                            '#f7fcf0';
+    }
 
-	marker.on('click', function(e) {
-  console.log(e);
-  alert('我是Marker，被点了。');
-})
+	function style(feature) {
+		return {
+			weight: 2,
+			opacity: 1,
+			color: 'white',
+			dashArray: '3',
+			fillOpacity: 0.7,
+			fillColor: getColor(feature.properties.density)
+		};
+	}
 
-    map.locate({
-    watch: true,
-    maxZoom: 16
-});
+	function showLandVisitor(block) {
 
-  map.on('locationfound', function(e) {
-  	  console.log(e);
-  var radius = e.accuracy / 2;
-  L.marker(xy(100, 160)).addTo(map).bindPopup("你就在这个圈内");
-  L.circle(xy(100, 160)).addTo(map);
-});
+      console.log(block);
 
-  map.on('locationerror', function(e) {
-  console.log('定位出错=====>', e);
-});
+      if (block.feature.properties.name == "Land X-1Y2")
+
+      {  
+
+
+    LandmarkerA  = L.marker(([-11.5064952108+51.51199, 116.4887332419-0.185615]), {icon: feiIcon}).addTo(map).bindPopup( '99th heir of the land with 90 landings').addTo(map);
+
+
+      }
+
+      if (block.feature.properties.name == "Stephen Land")
+
+      {  
+
+
+    marker9  = L.marker(([-11.5064952108+51.500622, 116.4887332419-0.178869]), {icon: simonIcon}).addTo(map).bindPopup( 'The 6th heir to TsingHua Land with 3 landing on').openPopup();
+    marker8  = L.marker(([-11.5064952108+51.49632, 116.4887332419-0.178077]), {icon: edIcon}).addTo(map).bindPopup( 'The 6th heir to TsingHua Land with 3 landing on').openPopup();
+    marker7  = L.marker(([-11.5064952108+51.496721, 116.4887332419-0.176157]), {icon: andrewIcon}).addTo(map).bindPopup( 'The 6th heir to TsingHua Land with 3 landing on').openPopup();
+    marker6  = L.marker(([-11.5064952108+51.497066, 116.4887332419-0.175339]), {icon: charlotteIcon}).addTo(map).bindPopup( 'The 6th heir to TsingHua Land with 3 landing on').openPopup();
+    marker5  = L.marker(([-11.5064952108+51.497169, 116.4887332419-0.176876]), {icon: nejraIcon}).addTo(map).bindPopup( 'The 4th heir to TsingHua Land with 5 landing on').openPopup();
+    marker4  = L.marker(([-11.5064952108+51.499874, 116.4887332419-0.179047]), {icon: leilaIcon}).addTo(map).bindPopup( 'The 4th heir to TsingHua Land with 5 landing on').openPopup();
+    marker3  = L.marker(([-11.5064952108+51.500795, 116.4887332419-0.179772]), {icon: stephenWIcon}).addTo(map).bindPopup( 'The 2nd heir to TsingHua Land with 10 landings').openPopup();
+    marker2  = L.marker(([-11.5064952108+51.501129, 116.4887332419-0.17615]), {icon: stephenGIcon}).addTo(map).bindPopup( 'Landlord of the land with 20 landings').openPopup();
+
+      }
+       if (block.feature.properties.name == "Land Starting")
+
+      {  
+
+
+    marker10  = L.marker(([-11.5064952108+51.51347, 116.4887332419-0.236335]), {icon: feiIcon}).addTo(map).bindPopup('The 2nd heir to this Land with 10 landings on').openPopup();
+    marker11  = L.marker(([-11.5064952108+51.511654, 116.4887332419-0.237322]), {icon: daisukeIcon}).addTo(map).bindPopup( 'The 2nd heir to this Land with 10 landings on' ).openPopup();
+    markerA  = L.marker(([-11.5064952108+51.511413, 116.4887332419-0.235249]), {icon: tianIcon}).addTo(map).bindPopup( 'The 2nd heir to this Land with 10 landings on').openPopup();
+    markerB  = L.marker(([-11.5064952108+51.51088, 116.4887332419-0.237837]), {icon: jessicaIcon}).addTo(map).bindPopup( 'The 2nd heir to this Land with 10 landings on').openPopup();
+    markerC  = L.marker(([-11.5064952108+51.510413, 116.4887332419-0.236549]), {icon: rayIcon}).addTo(map).bindPopup( 'The 2nd heir to this Land with 10 landings on').openPopup();
+    markerD  = L.marker(([-11.5064952108+51.509731, 116.4887332419-0.236536]), {icon: LordedIcon}).addTo(map).bindPopup(  'Landlord of the land with 17 landings').openPopup();
+    markerE  = L.marker(([-11.5064952108+51.509544, 116.4887332419-0.237849]), {icon: LordleilaIcon}).addTo(map).bindPopup('Landlord of the land with 17 landings' ).openPopup();
+    markerF  = L.marker(([-11.5064952108+51.509544, 116.4887332419-0.235249]), {icon: LordjohnIcon}).addTo(map).bindPopup('Landlord of the land with 17 landings' ).openPopup();
+
+     } 
+
+       if (block.feature.properties.name == "London Calling Land")
+
+      {  
+
+
+    markerA1 = L.marker(([-11.5064952108+51.511798, 116.4887332419-0.203925]), {icon: feiIcon}).addTo(map).bindPopup('The 3rd heir to this Land with 3 landing on' ).openPopup();
+    markerA2 = L.marker(([-11.5064952108+51.511718, 116.4887332419-0.201672]), {icon: daisukeIcon}).addTo(map).bindPopup('The 3rd heir to this Land with 3 landing on' ).openPopup();
+    markerF  = L.marker(([-11.5064952108+51.510884, 116.4887332419-0.204075]), {icon: abbyIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerG  = L.marker(([-11.5064952108+51.510703, 116.4887332419-0.201672]), {icon: zoeyIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerH  = L.marker(([-11.5064952108+51.509902, 116.4887332419-0.203432]), {icon: LordedIcon}).addTo(map).bindPopup( 'Landlord of the land with 19 landings' ).openPopup();
+    markerI  = L.marker(([-11.5064952108+51.509795, 116.4887332419-0.201415]), {icon: LordjohnIcon}).addTo(map).bindPopup(  'Landlord of the land with 19 landings').openPopup();
+
+
+     } 
+
+
+            if (block.feature.properties.name == "Design Psycho Land")
+
+      {  
+
+    markerF  = L.marker(([-11.5064952108+51.505393, 116.4887332419-0.158877]), {icon: jothiIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerG  = L.marker(([-11.5064952108+51.505339, 116.4887332419-0.156388]), {icon: feiIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerH  = L.marker(([-11.5064952108+51.504605, 116.4887332419-0.158576]), {icon: nagomuIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerK = L.marker(([-11.5064952108+51.506368, 116.4887332419-0.156881]), {icon: shivIcon}).addTo(map).bindPopup('The 3rd heir to this Land with 3 landing on' ).openPopup();
+    markerL = L.marker(([-11.5064952108+51.506234, 116.4887332419-0.158791]), {icon: parisIcon}).addTo(map).bindPopup(  'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerI  = L.marker(([-11.5064952108+51.504111, 116.4887332419-0.155525]), {icon: LordleilaIcon}).addTo(map).bindPopup(  'Landlord of the land with 18 landings').openPopup();
+    markerJ  = L.marker(([-11.5064952108+51.50391, 116.4887332419-0.158963]), {icon: LordnejraIcon}).addTo(map).bindPopup('Landlord of the land with 18 landings').openPopup();
+
+     }
+
+            if (block.feature.properties.name == "Gizmo Land")
+
+      {  
+
+    markerF  = L.marker(([-11.5064952108+51.50067, 116.4887332419-0.224327]), {icon: l2018Icon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerG  = L.marker(([-11.5064952108+51.500242, 116.4887332419-0.22201]), {icon: feiIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerH  = L.marker(([-11.5064952108+51.499334, 116.4887332419-0.224185]), {icon: abbyIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerI  = L.marker(([-11.5064952108+51.498372, 116.4887332419-0.220465]), {icon: LordcharlotteIcon}).addTo(map).bindPopup( 'Landlord of the land with 19 landings').openPopup();
+    markerJ  = L.marker(([-11.5064952108+51.49709, 116.4887332419-0.222353]), {icon: LordandrewIcon}).addTo(map).bindPopup( 'Landlord of the land with 19 landings').openPopup();
+     }  
+
+            if (block.feature.properties.name == "International Project Land")
+
+      {  
+
+    markerF  = L.marker(([-11.5064952108+51.500483, 116.4887332419-0.159422]), {icon: l2018Icon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerG  = L.marker(([-11.5064952108+51.500456, 116.4887332419-0.157019]), {icon: feiIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerH  = L.marker(([-11.5064952108+51.499147, 116.4887332419-0.15822]), {icon: zhongIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerH2  = L.marker(([-11.5064952108+51.49904, 116.4887332419-0.155474]), {icon: kimIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+    markerI  = L.marker(([-11.5064952108+51.497704, 116.4887332419-0.158735]), {icon: LordjohnIcon}).addTo(map).bindPopup( 'Landlord of the land with 20 landings').openPopup();
+    markerJ  = L.marker(([-11.5064952108+51.497036, 116.4887332419-0.154916]), {icon: LordnejraIcon}).addTo(map).bindPopup( 'Landlord of the land with 20 landings').openPopup();
+    markerK  = L.marker(([-11.5064952108+51.496369, 116.4887332419-0.156675]), {icon: LordleilaIcon}).addTo(map).bindPopup( 'Landlord of the land with 20 landings').openPopup();
+     }  
     
+	}	
+
+	function highlightFeature(e) {
+		var layer = e.target;
+
+		layer.setStyle({
+			weight: 5,
+			color: '#666',
+			dashArray: '',
+			fillOpacity: 0.7
+		});
+
+		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+			layer.bringToFront();
+		}
+
+		info.update(layer.feature.properties);
+			
+	}
+
+	var geojson;
+
+	function resetHighlight(e) {
+		geojson.resetStyle(e.target);
+		info.update();
+
+	}
+
+	function zoomToFeature(e) {
+		map.fitBounds(e.target.getBounds());
+        var block = e.target;
+        showLandVisitor(block);
+
+//				MarkerA.setLatLng(e.latlng);
+	}
+
+	function onEachFeature(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight,
+			click: zoomToFeature
+		});
+	}
+
+	geojson = L.geoJson(statesData, {
+		style: style,
+		onEachFeature: onEachFeature
+	}).addTo(map);
+
+	//map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
+
+
+	var legend = L.control({position: 'bottomright'});
+
+	legend.onAdd = function (map) {
+
+		var div = L.DomUtil.create('div', 'info legend'),
+			grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+			labels = [],
+			from, to;
+
+		for (var i = 0; i < grades.length; i++) {
+			from = grades[i];
+			to = grades[i + 1];
+
+			labels.push(
+				'<i style="background:' + getColor(from + 1) + '"></i> ' + from + (to ? '&ndash;' + to : '+'));
+		}
+
+		div.innerHTML = labels.join('<br>');
+		return div;
+	};
+
+	legend.addTo(map);
+
+    var landing = L.control({position: 'bottomleft'});
+
+
+	landing.onAdd = function (map) {
+
+		var div = L.DomUtil.create('div', 'info landing');
+
+		div.innerHTML = '<h5>Land on</h5>';
+		return div;
+	};
+
+	landing.addTo(map);
+
+	var LandingCount = 0;
+
+	$(".landing").click(function() 
+
+   {
+     if (LandingCount == 0)
+     {getLocation();
+     LandingCount = 1;
+     this.innerHTML ='<h5>My Landings</h5>';
+	 }
+	 else 
+	 {
+       
+        map.setView([-11.5064952108+51.506, 116.4887332419-0.19], 14);
+        marker10  = L.marker(([-11.5064952108+51.51347, 116.4887332419-0.236335]), {icon: feiIcon}).addTo(map).bindPopup('The 2nd heir to this Land with 10 landings on').openPopup();
+        markerA1 = L.marker(([-11.5064952108+51.511798, 116.4887332419-0.203925]), {icon: feiIcon}).addTo(map).bindPopup('The 3rd heir to this Land with 3 landing on' ).openPopup();
+        markerG  = L.marker(([-11.5064952108+51.505339, 116.4887332419-0.156388]), {icon: feiIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+        markerG  = L.marker(([-11.5064952108+51.500242, 116.4887332419-0.22201]), {icon: feiIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+        markerG  = L.marker(([-11.5064952108+51.500456, 116.4887332419-0.157019]), {icon: feiIcon}).addTo(map).bindPopup( 'The 3rd heir to this Land with 3 landing on').openPopup();
+	 }
+   } )
+
+	function getLocation()
+  {
+  if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(showPosition,errorhandle,{enableHighAccuracy: true});
+    }
+  else{console.log("Geolocation is not supported by this browser.");
+      }
+  }
+
+  function errorhandle()
+  {console.log("Geolocation error.");}
+
+  function showPosition(position)
+  {
+
+    console.log("updating marker...")
+    marker10  = L.marker(([-11.5064952108+51.496169, 116.4887332419-0.176876]), {icon: nejraIcon}).addTo(map).bindPopup( 'The 4th heir to TsingHua Land with 5 landing on').addTo(map);
+    marker9  = L.marker(([-11.5064952108+51.500622, 116.4887332419-0.178869]), {icon: simonIcon}).addTo(map).bindPopup( 'The 6th heir to TsingHua Land with 3 landing on').addTo(map);
+    marker8  = L.marker(([-11.5064952108+51.49632, 116.4887332419-0.178077]), {icon: edIcon}).addTo(map).bindPopup( 'The 6th heir to TsingHua Land with 3 landing on').addTo(map);
+    marker7  = L.marker(([-11.5064952108+51.496721, 116.4887332419-0.176157]), {icon: andrewIcon}).addTo(map).bindPopup( 'The 6th heir to TsingHua Land with 3 landing on').addTo(map);
+    marker6  = L.marker(([-11.5064952108+51.497066, 116.4887332419-0.175339]), {icon: charlotteIcon}).addTo(map).bindPopup( 'The 6th heir to TsingHua Land with 3 landing on').addTo(map);
+    marker5  = L.marker(([-11.5064952108+51.497169, 116.4887332419-0.176876]), {icon: nejraIcon}).addTo(map).bindPopup( 'The 4th heir to TsingHua Land with 5 landing on').addTo(map);
+    marker4  = L.marker(([-11.5064952108+51.499874, 116.4887332419-0.179047]), {icon: leilaIcon}).addTo(map).bindPopup( 'The 4th heir to TsingHua Land with 5 landing on').addTo(map);
+    marker3  = L.marker(([-11.5064952108+51.500795, 116.4887332419-0.179772]), {icon: stephenWIcon}).addTo(map).bindPopup( 'The 2nd heir to TsingHua Land with 10 landings').addTo(map);
+    marker2  = L.marker(([-11.5064952108+51.501129, 116.4887332419-0.17615]), {icon: stephenGIcon}).addTo(map).bindPopup( 'Landlord of the land with 20 landings').addTo(map);
+    marker1  = L.marker(([position.coords.latitude,position.coords.longitude]), {icon: feiIcon}).addTo(map).bindPopup('This is your 2nd landing on TsingHua Land. Congratulations ! Now you are the 23th heir to the landlord of the Land !').openPopup();
+    map.flyTo([position.coords.latitude, position.coords.longitude],16); 
+  };
+
 </script>
 
 
